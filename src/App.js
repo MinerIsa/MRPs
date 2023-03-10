@@ -27,10 +27,18 @@ function App() {
   const handleLogin = () => {
     if (password === "030597Isa") {
       setIsLoggedIn(true);
+      localStorage.setItem("lastLogin", Date.now());
     } else {
       alert("Incorrect password!");
     }
   };
+
+  useEffect(() => {
+    const lastLogin = localStorage.getItem("lastLogin");
+    if (lastLogin && Date.now() - lastLogin < 3 * 60 * 60 * 1000) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
