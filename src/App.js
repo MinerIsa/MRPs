@@ -13,9 +13,23 @@ function App() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = () => {
+    if (password === "030597Isa") {
+      setIsLoggedIn(true);
+    } else {
+      alert("Incorrect password!");
+    }
   };
 
   useEffect(() => {
@@ -44,6 +58,24 @@ function App() {
   const toggleDateFilter = () => {
     setIsDateFilterOpen(!isDateFilterOpen);
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="App">
+        <header className="header pb-3">
+          <div className="container-of-search">
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <button onClick={handleLogin}>Login</button>
+          </div>
+        </header>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
