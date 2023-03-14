@@ -47,6 +47,7 @@ function App() {
       const arrowIcon = document.querySelector(
         ".date-filter-button .expand-arrow",
       );
+
       if (scrollTop > 0) {
         header.classList.add("scrolled");
         arrowIcon.classList.add("white");
@@ -63,8 +64,16 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const isDateFilterOpenStr = localStorage.getItem("isDateFilterOpen");
+    if (isDateFilterOpenStr) {
+      setIsDateFilterOpen(JSON.parse(isDateFilterOpenStr));
+    }
+  }, []);
+
   const toggleDateFilter = () => {
     setIsDateFilterOpen(!isDateFilterOpen);
+    localStorage.setItem("isDateFilterOpen", JSON.stringify(!isDateFilterOpen));
   };
 
   if (!isLoggedIn) {
@@ -86,17 +95,12 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="header pb-3">
+    <div className="App mb-5">
+      <header className="header pb-3 pt-3">
         <div className="container-of-search">
           <Search handleSearch={handleSearch} />
         </div>
         <button className="date-filter-button" onClick={toggleDateFilter}>
-          {/* <FontAwesomeIcon
-            filterIcon={isDateFilterOpen ? faChevronUp : faChevronDown}
-            className={`expand-arrow ${isDateFilterOpen ? "rotate" : ""}`}
-          /> */}
-
           <FontAwesomeIcon
             icon={faAngleDown}
             className={`expand-arrow ${
@@ -112,13 +116,20 @@ function App() {
           />
         )}
       </header>
-      <main className="pt-5">
+      <main className="pt-3">
         <MRPData
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           fromDate={fromDate}
           toDate={toDate}
         />
+        {/* Uncomment the following line to render the LegacyData component /}
+{/ <LegacyData
+       searchQuery={searchQuery}
+       setSearchQuery={setSearchQuery}
+       fromDate={fromDate}
+       toDate={toDate}
+     /> */}
       </main>
     </div>
   );
